@@ -1,10 +1,13 @@
 package ar.edu.unlam.pb2.sistemaDeRecompensas;
 
+import java.util.ArrayList;
+import java.util.List;
 
 public abstract class Cazadores implements ComportamientoCazador {
 
 	private Integer nivelDeExperiencia;
 	private Integer capturasRealizadas;
+	protected List<Profugo> cazados = new ArrayList<>();
 
 	public Cazadores(Integer nivelDeExperiencia) {
 		this.nivelDeExperiencia = nivelDeExperiencia;
@@ -27,6 +30,10 @@ public abstract class Cazadores implements ComportamientoCazador {
 		}
 	}
 
+	public void agregarCazado(Profugo profugo) {
+		this.cazados.add(profugo);
+	}
+
 	public void capturarEnZona(Zonas zona) {
 		int minHabilidad = Integer.MAX_VALUE;
 		int cantidadCapturados = 0;
@@ -36,6 +43,7 @@ public abstract class Cazadores implements ComportamientoCazador {
 
 			if (profugo.isCapturado()) {
 				cantidadCapturados++;
+				agregarCazado(profugo);
 			} else {
 				if (profugo.getNivelDeHabilidad() < minHabilidad) {
 					minHabilidad = profugo.getNivelDeHabilidad();
@@ -53,6 +61,10 @@ public abstract class Cazadores implements ComportamientoCazador {
 		this.nivelDeExperiencia += minHabilidad + (2 * cantidadCapturados);
 	}
 
+	public List<Profugo> getCazados() {
+		return cazados;
+	}
+
 	protected abstract void intimidacionEspecifica(Profugo profugo);
 
 	protected abstract Boolean capturaEspecifica(Profugo profugo);
@@ -64,7 +76,5 @@ public abstract class Cazadores implements ComportamientoCazador {
 	public Integer getNivelDeExperiencia() {
 		return nivelDeExperiencia;
 	}
-	
-	
 
 }
