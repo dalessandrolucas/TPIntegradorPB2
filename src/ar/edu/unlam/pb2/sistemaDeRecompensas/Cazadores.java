@@ -1,23 +1,26 @@
 package ar.edu.unlam.pb2.sistemaDeRecompensas;
 
-import java.util.ArrayList;
 
-public abstract class Cazadores {
+public abstract class Cazadores implements ComportamientoCazador {
+
 	private Integer nivelDeExperiencia;
+	private Integer capturasRealizadas;
 
 	public Cazadores(Integer nivelDeExperiencia) {
-		super();
 		this.nivelDeExperiencia = nivelDeExperiencia;
+		this.capturasRealizadas = 0;
 	}
 
+	@Override
 	public void intimidar(Profugo profugo) {
 		profugo.setIntimidado(true);
 		profugo.reducirInocencia(2);
 		intimidacionEspecifica(profugo);
 	}
 
+	@Override
 	public void capturar(Profugo profugo) {
-		if (nivelDeExperiencia > profugo.getNivelDeInocencia() && capturaEspecifica(profugo)) {
+		if (this.nivelDeExperiencia > profugo.getNivelDeInocencia() && this.capturaEspecifica(profugo)) {
 			profugo.setCapturado(true);
 		} else {
 			intimidar(profugo);
@@ -30,7 +33,7 @@ public abstract class Cazadores {
 
 		for (Profugo profugo : zona.getProfugos()) {
 			capturar(profugo);
-			
+
 			if (profugo.isCapturado()) {
 				cantidadCapturados++;
 			} else {
@@ -39,18 +42,29 @@ public abstract class Cazadores {
 				}
 			}
 		}
-		
+
 		zona.removerCapturados();
 
 		if (minHabilidad == Integer.MAX_VALUE) {
 			minHabilidad = 0;
 		}
 
-		nivelDeExperiencia += minHabilidad + (2 * cantidadCapturados);
+		this.capturasRealizadas += cantidadCapturados;
+		this.nivelDeExperiencia += minHabilidad + (2 * cantidadCapturados);
 	}
 
 	protected abstract void intimidacionEspecifica(Profugo profugo);
 
 	protected abstract Boolean capturaEspecifica(Profugo profugo);
+
+	public Integer getCapturasRealizadas() {
+		return capturasRealizadas;
+	}
+
+	public Integer getNivelDeExperiencia() {
+		return nivelDeExperiencia;
+	}
+	
+	
 
 }

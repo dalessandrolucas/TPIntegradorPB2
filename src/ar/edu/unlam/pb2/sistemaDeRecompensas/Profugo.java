@@ -1,9 +1,9 @@
 package ar.edu.unlam.pb2.sistemaDeRecompensas;
 
-public class Profugo {
+public class Profugo implements EntrenamientoProfugo {
 
 	private Integer nivelDeInocencia, nivelDeHabilidad;
-	private Boolean esNervioso, capturado, intimidado;
+	private Boolean esNervioso, capturado, intimidado, esElite, protegidoLegal;
 
 	public Profugo(Integer nivelDeInocencia, Integer nivelDeHabilidad, Boolean esNervioso, Boolean capturado,
 			Boolean intimidado) {
@@ -13,6 +13,8 @@ public class Profugo {
 		this.esNervioso = esNervioso;
 		this.capturado = capturado;
 		this.intimidado = intimidado;
+		this.esElite = false;
+		this.protegidoLegal = false;
 	}
 
 	public void setIntimidado(Boolean intimidado) {
@@ -20,8 +22,16 @@ public class Profugo {
 	}
 
 	public void reducirInocencia(Integer cantidad) {
-		if (intimidado) {
-			this.nivelDeInocencia -= cantidad;
+		if (this.intimidado) {
+			int nuevaInocencia = this.nivelDeInocencia - cantidad;
+
+			if (this.protegidoLegal) {
+				this.nivelDeInocencia = Math.max(nuevaInocencia, 40);
+			}
+
+			else {
+				this.nivelDeInocencia = nuevaInocencia;
+			}
 		}
 	}
 
@@ -33,6 +43,28 @@ public class Profugo {
 				this.nivelDeHabilidad = 0;
 			}
 		}
+	}
+
+	@Override
+	public void entrenamientoElite() {
+
+		this.esNervioso = false;
+		this.esElite = true;
+
+	}
+
+	@Override
+	public void protecLegal() {
+
+		this.protegidoLegal = true;
+		this.nivelDeInocencia = Math.max(this.nivelDeInocencia, 40);
+	}
+
+	@Override
+	public void entrenarArtMarciales() {
+
+		this.nivelDeHabilidad = Math.min((this.nivelDeHabilidad * 2), 100);
+
 	}
 
 	public Integer getNivelDeInocencia() {
@@ -69,6 +101,18 @@ public class Profugo {
 
 	public Boolean getIntimidado() {
 		return intimidado;
+	}
+
+	public Boolean getEsElite() {
+		return esElite;
+	}
+
+	public void setEsElite(Boolean esElite) {
+		this.esElite = esElite;
+	}
+
+	public Boolean getProtegidoLegal() {
+		return protegidoLegal;
 	}
 
 }

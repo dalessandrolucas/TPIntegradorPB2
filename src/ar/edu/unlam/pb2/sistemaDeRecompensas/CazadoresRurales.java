@@ -10,7 +10,7 @@ public class CazadoresRurales extends Cazadores {
 	@Override
 	protected void intimidacionEspecifica(Profugo profugo) {
 
-		if (profugo.getIntimidado() == true) {
+		if (profugo.getIntimidado().equals(true) && profugo.getEsElite().equals(false)) {
 			profugo.setEsNervioso(true);
 		}
 	}
