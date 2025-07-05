@@ -2,23 +2,24 @@ package ar.edu.unlam.pb2.sistemaDeRecompensas;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
-import java.util.HashSet;
 
 public class AgenciaCazadores {
 
 	private String nombre;
-	private Set<Cazadores> cazadores;
+	private List<Cazadores> cazadores;
 
 	public AgenciaCazadores(String nombre) {
 
 		this.nombre = nombre;
-		this.cazadores = new HashSet<>();
+		this.cazadores = new ArrayList<>();
 
 	}
 
 	public boolean contratarCazador(Cazadores cazador) {
-		return this.cazadores.add(cazador);
+		if (cazador != null) {
+			return this.cazadores.add(cazador);
+		}
+		return false;
 	}
 
 	public List<Profugo> obtenerTodosLosProfugosCazados() {
@@ -63,6 +64,10 @@ public class AgenciaCazadores {
 
 	public String getNombre() {
 		return nombre;
+	}
+
+	public List<Cazadores> getCazadores() {
+		return cazadores;
 	}
 
 }

@@ -7,6 +7,7 @@ public abstract class Cazadores implements ComportamientoCazador {
 
 	private Integer nivelDeExperiencia;
 	private Integer capturasRealizadas;
+
 	protected List<Profugo> cazados = new ArrayList<>();
 
 	public Cazadores(Integer nivelDeExperiencia) {
@@ -35,31 +36,33 @@ public abstract class Cazadores implements ComportamientoCazador {
 	}
 
 	public void capturarEnZona(Zonas zona) {
-		int minHabilidad = Integer.MAX_VALUE;
-		int cantidadCapturados = 0;
+        int minHabilidad = Integer.MAX_VALUE;
+        int cantidadCapturados = 0;
 
-		for (Profugo profugo : zona.getProfugos()) {
-			capturar(profugo);
+        if (zona.getProfugos().size() > 0) {
+            for (Profugo profugo : zona.getProfugos()) {
+                capturar(profugo);
 
-			if (profugo.isCapturado()) {
-				cantidadCapturados++;
-				agregarCazado(profugo);
-			} else {
-				if (profugo.getNivelDeHabilidad() < minHabilidad) {
-					minHabilidad = profugo.getNivelDeHabilidad();
-				}
-			}
-		}
+                if (profugo.isCapturado()) {
+                    cantidadCapturados++;
+                    agregarCazado(profugo);
+                } else {
+                    if (profugo.getNivelDeHabilidad() < minHabilidad) {
+                        minHabilidad = profugo.getNivelDeHabilidad();
+                    }
+                }
+            }
+        }
 
-		zona.removerCapturados();
+        zona.removerCapturados();
 
-		if (minHabilidad == Integer.MAX_VALUE) {
-			minHabilidad = 0;
-		}
+        if (minHabilidad == Integer.MAX_VALUE) {
+            minHabilidad = 0;
+        }
 
-		this.capturasRealizadas += cantidadCapturados;
-		this.nivelDeExperiencia += minHabilidad + (2 * cantidadCapturados);
-	}
+        this.capturasRealizadas += cantidadCapturados;
+        this.nivelDeExperiencia += minHabilidad + (2 * cantidadCapturados);
+    }
 
 	public List<Profugo> getCazados() {
 		return cazados;
